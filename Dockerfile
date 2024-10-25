@@ -1,4 +1,4 @@
-FROM wordpress:6.4.3-php8.2-fpm
+FROM wordpress:6.6.2-php8.3-fpm
 
 RUN apt-get update && apt dist-upgrade -y && apt-get install gnupg2 -y
 RUN touch /etc/apt/sources.list.d/pgdg.list
@@ -27,7 +27,7 @@ RUN sed -i -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" /
 RUN pecl install redis && docker-php-ext-enable redis
 
 # Memory Limit
-RUN echo "memory_limit=256M" > $PHP_INI_DIR/conf.d/memory-limit.ini
+RUN echo "memory_limit=512M" > $PHP_INI_DIR/conf.d/memory-limit.ini
 RUN echo "max_execution_time=900" >> $PHP_INI_DIR/conf.d/memory-limit.ini
 RUN echo "post_max_size=20M" >> $PHP_INI_DIR/conf.d/memory-limit.ini
 RUN echo "upload_max_filesize=20M" >> $PHP_INI_DIR/conf.d/memory-limit.ini
