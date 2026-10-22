@@ -1,4 +1,4 @@
-FROM wordpress:6.9.4-php8.4-fpm
+FROM wordpress:7.1.3-php8.5-fpm
 
 RUN apt-get update && apt dist-upgrade -y && apt-get install gnupg2 -y
 RUN touch /etc/apt/sources.list.d/pgdg.list
