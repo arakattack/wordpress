@@ -2,8 +2,14 @@ FROM wordpress:6.9.4-php8.4-fpm
 
 RUN apt-get update && apt dist-upgrade -y && apt-get install gnupg2 -y
 RUN touch /etc/apt/sources.list.d/pgdg.list
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7FCC7D46ACCC4CF8
+RUN install -d /usr/share/postgresql-common/pgdg && \
+    curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+      -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc && \
+    . /etc/os-release && \
+    echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt ${VERSION_CODENAME}-pgdg main" \
+      > /etc/apt/sources.list.d/pgdg.list && \
+    curl -sL https://deb.nodesource.com/setup_20.x | /bin/bash - && \
+    apt-get update && apt-get install -y unixodbc postgresql-client-18 libpq-dev nodejs
 
 RUN apt-get update && apt dist-upgrade -y --allow-unauthenticated && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-unauthenticated
